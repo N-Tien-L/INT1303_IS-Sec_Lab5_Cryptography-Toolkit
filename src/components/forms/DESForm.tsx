@@ -141,6 +141,10 @@ export function DESForm() {
 
   const handleModeChange = (newMode: CryptoMode) => {
     setMode(newMode);
+    // Clear IV when switching to ECB mode since IV is not needed
+    if (newMode === 'ECB') {
+      setIv('');
+    }
     setIvError('');
   };
 
