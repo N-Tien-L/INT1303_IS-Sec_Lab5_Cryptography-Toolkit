@@ -43,7 +43,9 @@ function App() {
         return <RSAForm />;
       case 'MD5':
       case 'SHA-256':
-        return <HashForm />;
+        return <HashForm
+            algorithm={activeAlgorithm}
+          />;
       default:
         return <AESForm />;
     }
