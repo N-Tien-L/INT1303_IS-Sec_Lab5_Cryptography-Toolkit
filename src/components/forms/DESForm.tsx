@@ -99,7 +99,10 @@ export function DESForm() {
 
   const handleEncrypt = () => {
     if (!input) { setError('Please enter plaintext to encrypt'); return; }
-    if (!validateInputs()) return;
+    if (!validateInputs()) {
+      setError('Encryption failed: invalid key or IV format');
+      return;
+    }
     setError('');
 
     const result = encryptDES(input, key, mode, mode === 'CBC' ? iv : undefined);
@@ -113,7 +116,10 @@ export function DESForm() {
 
   const handleDecrypt = () => {
     if (!input) { setError('Please enter ciphertext (hex) to decrypt'); return; }
-    if (!validateInputs()) return;
+    if (!validateInputs()) {
+      setError('Decryption failed: invalid key or IV format');
+      return;
+    }
     setError('');
 
     const result = decryptDES(input, key, mode, mode === 'CBC' ? iv : undefined);
@@ -169,6 +175,11 @@ export function DESForm() {
             label={`Secret Key (hex) — 8 bytes / ${DES_KEY_HEX_LENGTH} ký tự hex`}
             value={key}
             onChange={(e) => { setKey(e.target.value); setKeyError(''); }}
+            onBlur={() => {
+              if (key && !validateDESKey(key)) {
+                setKeyError(`Key must be exactly 8 bytes (${DES_KEY_HEX_LENGTH} hex characters)`);
+              }
+            }}
             placeholder="Nhập key 16 ký tự hex hoặc tự tạo..."
             error={keyError}
           />
@@ -189,6 +200,11 @@ export function DESForm() {
               label={`IV (hex) — 8 bytes / ${DES_IV_HEX_LENGTH} ký tự hex`}
               value={iv}
               onChange={(e) => { setIv(e.target.value); setIvError(''); }}
+              onBlur={() => {
+                if (iv && !validateDESIV(iv)) {
+                  setIvError(`IV must be exactly 8 bytes (${DES_IV_HEX_LENGTH} hex characters)`);
+                }
+              }}
               placeholder="Nhập IV 16 ký tự hex hoặc tự tạo..."
               error={ivError}
             />
