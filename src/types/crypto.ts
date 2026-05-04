@@ -10,6 +10,12 @@ export interface AESOperationResult {
   error?: string;
 }
 
+export interface CryptoResult {
+  success: boolean;
+  data?: string;
+  error?: string;
+}
+
 export interface RSAKeyPair {
   publicKey: string;
   privateKey: string;
